@@ -1,0 +1,34 @@
+#Check limit's
+
+#NB limit is per process per user
+
+ulimit -n
+
+#Hard limit
+ulimit -Hn
+
+#Soft limit
+ulimit -Sn
+
+#On Ubuntu
+#current limits
+cat /proc/<pid>/limits
+
+#current running handles
+sudo ls /proc/<pid>/fd | wc -l
+
+sudo nano /etc/security/limits.conf
+#add these
+*    soft nofile <new limit>
+*    hard nofile <new limit>
+root soft nofile <new limit>
+root hard nofile <new limit>
+
+sudo nano /etc/pam.d/common-session
+#add this
+session required pam_limits.so
+
+sudo nano /etc/pam.d/common-session-noninteractive
+session required pam_limits.so
+
+#Also double check any process supervior you may have
